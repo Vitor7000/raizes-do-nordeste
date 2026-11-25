@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Totem de autoatendimento — Raízes do Nordeste</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body data-raiz="../">
+
+<div class="totem-corpo">
+  <div class="totem-topo">
+    <h1 style="color:#FFFDF8; margin-bottom:0;">Raízes <span style="color:var(--sol);">do Nordeste</span></h1>
+    <p style="color:rgba(255,253,248,0.8); margin-bottom:0;">Toque para montar seu pedido</p>
+    <p id="totem-unidade-nome" style="color:var(--sol); font-weight:600; margin-bottom:0; font-size:0.9rem;"></p>
+  </div>
+
+  <div class="totem-area">
+    <div class="container">
+      <div class="filtros-cardapio" data-filtros-cardapio style="justify-content:center; display:flex;"></div>
+      <div class="grade grade-3" data-lista-totem style="margin-top: var(--esp-3);"></div>
+
+      <div class="resumo-pedido mt-4" id="totem-resumo">
+        <h3>Seu pedido no totem</h3>
+        <div id="totem-itens"><p class="mb-0" style="color:#8a8072;">Nenhum item selecionado ainda.</p></div>
+        <div class="resumo-linha total"><span>Total</span><span id="totem-total">R$ 0,00</span></div>
+        <p style="font-size:0.8rem; color:#5a4f43; margin-top:var(--esp-2);">
+          Este totem é de uso compartilhado e <strong>não armazena dados pessoais</strong>:
+          registramos apenas os itens do pedido e a unidade, para preparo no balcão.
+          Saiba mais na <a href="privacidade.html" style="color:var(--terracota); font-weight:600;">Política de Privacidade</a>.
+        </p>
+        <button class="btn btn-primario btn-bloco mt-4" id="totem-confirmar" disabled>Confirmar e pagar no caixa</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center; padding: var(--esp-2);">
+    <a href="../index.html" style="color:rgba(255,253,248,0.7); font-size:0.85rem;">Sair do modo totem</a>
+    <span style="color:rgba(255,253,248,0.4); font-size:0.85rem;"> · </span>
+    <a href="privacidade.html" style="color:rgba(255,253,248,0.7); font-size:0.85rem;">Política de Privacidade</a>
+  </div>
+</div>
+
+<script src="../js/dados.js"></script>
+<script src="../js/pedido.js"></script>
+<script>
+  // O totem é um equipamento físico instalado em UMA unidade fixa.
+  // Em produção, a unidade viria configurada no próprio dispositivo;
+  // aqui simulamos isso via parâmetro de URL (?unidade=fortaleza),
+  // caindo para a unidade padrão quando não informado.
+  const params = new URLSearchParams(window.location.search);
+  const unidadeParam = params.get('unidade');
+  const UNIDADE_TOTEM = RN.buscarUnidadePorId(unidadeParam) ? unidadeParam : RN.UNIDADE_PADRAO;
+  const unidadeInfo = RN.buscarUnidadePorId(UNIDADE_TOTEM);
+  document.getElementById('totem-unidade-nome').textContent = `Unidade: ${unidadeInfo.nome}`;
+
+  // Pedido local do totem — independente do carrinho normal do site,
+  // pois representa um atendimento presencial e avulso (canal "totem").
+  let pedidoTotem = [];
+
+  montarFiltros();
+  renderizarGrade();
+
+  function montarFiltros() {
+    const filtros = document.querySelector('[data-filtros-cardapio]');
+    filtros.innerHTML = RN.CATEGORIAS.map((c) => `<button class="filtro-chip" data-cat="${c.id}" aria-pressed="${c.id === 'todos'}">${c.nome}</button>`).join('');
+    filtros.querySelectorAll('.filtro-chip').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        filtros.querySelectorAll('.filtro-chip').forEach((c) => c.setAttribute('aria-pressed', 'false'));
+        chip.setAttribute('aria-pressed', 'true');
+        renderizarGrade(chip.dataset.cat);
+      });
+    });
+  }
+
+  function renderizarGrade(categoria = 'todos') {
+    const grade = document.querySelector('[data-lista-totem]');
+    const itensDaUnidade = RN.itensDisponiveisNaUnidade(UNIDADE_TOTEM);
+    const itens = itensDaUnidade.filter((p) => categoria === 'todos' || p.categoria === categoria);
+    grade.innerHTML = itens.map((p) => `
+      <button class="painel" style="text-align:left; cursor:pointer; border:1px solid var(--linha); width:100%;" data-selecionar="${p.id}">
+        <div style="font-size:2rem;">${p.emoji}</div>
+        <h3 class="mb-0">${p.nome}</h3>
+        <strong>${RN.formatarMoeda(p.preco)}</strong>
+      </button>
+    `).join('');
+
+    grade.querySelectorAll('[data-selecionar]').forEach((botao) => {
+      botao.addEventListener('click', () => adicionar(Number(botao.dataset.selecionar)));
+    });
+  }
+
+  function adicionar(id) {
+    const existente = pedidoTotem.find((i) => i.id === id);
+    if (existente) existente.quantidade += 1;
+    else pedidoTotem.push({ id, quantidade: 1 });
+    renderizarResumo();
+  }
+
+  function renderizarResumo() {
+    const container = document.getElementById('totem-itens');
+    const totalEl = document.getElementById('totem-total');
+    const confirmar = document.getElementById('totem-confirmar');
+
+    if (pedidoTotem.length === 0) {
+      container.innerHTML = `<p class="mb-0" style="color:#8a8072;">Nenhum item selecionado ainda.</p>`;
+      totalEl.textContent = RN.formatarMoeda(0);
+      confirmar.disabled = true;
+      return;
+    }
+
+    let total = 0;
+    container.innerHTML = pedidoTotem.map((item) => {
+      const prato = RN.buscarPratoPorId(item.id);
+      const preco = RN.precoNaUnidade(prato, UNIDADE_TOTEM);
+      total += preco * item.quantidade;
+      return `<div class="resumo-linha"><span>${item.quantidade}× ${prato.nome}</span><span>${RN.formatarMoeda(preco * item.quantidade)}</span></div>`;
+    }).join('');
+
+    totalEl.textContent = RN.formatarMoeda(total);
+    confirmar.disabled = false;
+  }
+
+  document.getElementById('totem-confirmar').addEventListener('click', () => {
+    // Cria um pedido de verdade (canal "totem"), visível no painel da
+    // cozinha/atendente e na simulação de status do cliente.
+    const pedido = criarPedidoAPartirDoCarrinho({ itens: pedidoTotem, canal: 'totem', unidadeId: UNIDADE_TOTEM });
+    const senha = pedido.id.slice(-3).toUpperCase();
+    document.querySelector('.totem-area .container').innerHTML = `
+      <div class="centralizado">
+        <p class="hero-eyebrow" style="color:var(--terracota);">Pedido confirmado</p>
+        <h2>Dirija-se ao caixa para pagar</h2>
+        <p>Informe a senha abaixo ao atendente:</p>
+        <div class="totem-numeros" style="color:var(--terracota);">${senha}</div>
+        <a href="totem.html?unidade=${UNIDADE_TOTEM}" class="btn btn-secundario mt-4">Novo pedido</a>
+      </div>
+    `;
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carrinho — Raízes do Nordeste</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body data-raiz="../">
+
+<header class="cabecalho">
+  <div class="faixa-zigzag"></div>
+  <nav class="nav">
+    <a href="../index.html" class="marca">Raízes <span>do Nordeste</span></a>
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">☰ Menu</button>
+    <ul class="nav-links">
+      <li><a href="../index.html">Início</a></li>
+      <li><a href="cardapio.html">Cardápio</a></li>
+      <li><a href="cultura.html">Cultura</a></li>
+      <li><a href="destinos.html">Destinos</a></li>
+      <li><a href="forro.html">Forró</a></li>
+      <li><a href="gastronomia.html">Gastronomia</a></li>
+      <li><a href="fidelidade.html">Fidelidade</a></li>
+    </ul>
+    <div class="nav-acoes">
+      <span data-area-unidade></span>
+      <span data-area-usuario></span>
+      <a href="carrinho.html" class="nav-carrinho" aria-current="page" aria-label="Carrinho de compras">🛒<span class="contador-carrinho">0</span></a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="secao">
+    <div class="container" style="display:grid; grid-template-columns: 1.6fr 1fr; gap: var(--esp-4); align-items:start;">
+      <div>
+        <h1>Seu carrinho</h1>
+        <div data-lista-carrinho></div>
+      </div>
+
+      <aside class="resumo-pedido" data-resumo-carrinho>
+        <h3>Resumo do pedido</h3>
+
+        <form data-form-cupom class="linha-cupom" novalidate>
+          <input type="text" name="cupom" placeholder="Cupom de desconto (ex.: RAIZES10)" aria-label="Cupom de desconto">
+          <button type="submit" class="btn btn-secundario">Aplicar</button>
+        </form>
+        <div data-cupom-mensagem></div>
+
+        <div class="resumo-linha"><span>Subtotal</span><span data-subtotal>R$ 0,00</span></div>
+        <div class="resumo-linha desconto" data-linha-desconto style="display:none;"><span>Desconto (cupom)</span><span data-desconto>R$ 0,00</span></div>
+        <div class="resumo-linha"><span>Taxa de entrega</span><span data-taxa>R$ 0,00</span></div>
+        <div class="resumo-linha total"><span>Total</span><span data-total>R$ 0,00</span></div>
+        <a href="pagamento.html" class="btn btn-primario btn-bloco mt-4" data-finalizar-pedido>Finalizar pedido</a>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape">
+  <div class="container rodape-baixo">
+    <span>© 2026 Raízes do Nordeste.</span>
+    <a href="privacidade.html">Política de Privacidade</a>
+    <a href="cardapio.html">Continuar comprando</a>
+  </div>
+</footer>
+
+<script src="../js/dados.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/carrinho.js"></script>
+</body>
+</html>

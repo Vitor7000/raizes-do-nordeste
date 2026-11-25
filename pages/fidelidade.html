@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fidelidade — Raízes do Nordeste</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body data-raiz="../">
+
+<header class="cabecalho">
+  <div class="faixa-zigzag"></div>
+  <nav class="nav">
+    <a href="../index.html" class="marca">Raízes <span>do Nordeste</span></a>
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">☰ Menu</button>
+    <ul class="nav-links">
+      <li><a href="../index.html">Início</a></li>
+      <li><a href="cardapio.html">Cardápio</a></li>
+      <li><a href="cultura.html">Cultura</a></li>
+      <li><a href="fidelidade.html" aria-current="page">Fidelidade</a></li>
+    </ul>
+    <div class="nav-acoes">
+      <span data-area-unidade></span>
+      <span data-area-usuario></span>
+      <a href="carrinho.html" class="nav-carrinho" aria-label="Carrinho de compras">🛒<span class="contador-carrinho">0</span></a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-conteudo" style="grid-template-columns: 1fr;">
+      <div>
+        <p class="hero-eyebrow">Clube Raízes</p>
+        <h1>A cada real gasto, um ponto de raiz.</h1>
+        <p>Acumule pontos em cada pedido e troque por pratos, sobremesas e descontos exclusivos.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao">
+    <div class="container">
+      <div class="painel" id="status-fidelidade" style="margin-bottom: var(--esp-4);"></div>
+
+      <h2>Como funciona</h2>
+      <div class="grade grade-3">
+        <div class="painel">
+          <h3>1. Peça</h3>
+          <p>Faça seu pedido pelo cardápio, logado na sua conta.</p>
+        </div>
+        <div class="painel">
+          <h3>2. Acumule</h3>
+          <p>A cada R$ 1 gasto, você ganha 1 ponto de fidelidade (pontos em dobro em pedidos acima de R$ 60, na campanha atual).</p>
+        </div>
+        <div class="painel">
+          <h3>3. Troque</h3>
+          <p>Use seus pontos para resgatar prêmios na tabela abaixo.</p>
+        </div>
+      </div>
+
+      <h2 class="mt-4">Prêmios disponíveis</h2>
+      <table class="tabela">
+        <thead>
+          <tr><th>Prêmio</th><th>Pontos necessários</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Café de coador com rapadura grátis</td><td>50 pts</td></tr>
+          <tr><td>Sobremesa à sua escolha</td><td>120 pts</td></tr>
+          <tr><td>10% de desconto no próximo pedido</td><td>200 pts</td></tr>
+          <tr><td>Prato principal grátis</td><td>400 pts</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape">
+  <div class="container rodape-baixo">
+    <span>© 2026 Raízes do Nordeste.</span>
+    <a href="privacidade.html">Política de Privacidade</a>
+    <a href="../index.html">Voltar ao início</a>
+  </div>
+</footer>
+
+<script src="../js/dados.js"></script>
+<script src="../js/script.js"></script>
+<script>
+  const status = document.getElementById('status-fidelidade');
+  const usuario = RN.usuarioAtual();
+
+  if (usuario) {
+    const pontos = RN.lerJSON(RN.CHAVES.FIDELIDADE, {})[usuario.email] || 0;
+    status.innerHTML = `<h3>Seus pontos</h3><p style="font-size:2rem; font-family:var(--fonte-titulo); color:var(--terracota); margin:0;">${pontos} pts</p>`;
+  } else {
+    status.innerHTML = `<h3>Entre para ver seus pontos</h3><p>Faça login ou crie uma conta para começar a acumular.</p><a href="login.html" class="btn btn-primario">Entrar</a>`;
+  }
+</script>
+</body>
+</html>

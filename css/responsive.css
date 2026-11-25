@@ -1,0 +1,58 @@
+/* =========================================================
+   RAÍZES DO NORDESTE — Responsividade
+   ========================================================= */
+
+@media (max-width: 960px) {
+  .hero-conteudo { grid-template-columns: 1fr; }
+  .hero-arte { order: -1; }
+  .grade-4 { grid-template-columns: repeat(2, 1fr); }
+  .rodape-grade { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  .nav-toggle { display: inline-flex; }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--tinta);
+    flex-direction: column;
+    padding: var(--esp-2) var(--esp-3);
+    gap: var(--esp-2);
+  }
+
+  .nav-links.aberto { display: flex; }
+
+  .grade-3, .grade-2 { grid-template-columns: 1fr; }
+
+  .item-prato {
+    grid-template-columns: 72px 1fr;
+    grid-template-areas:
+      "foto nome"
+      "acoes acoes";
+  }
+  .item-prato-foto { grid-area: foto; width: 72px; height: 72px; }
+  .item-prato > div:nth-child(2) { grid-area: nome; }
+  .item-prato-acoes { grid-area: acoes; flex-direction: row; justify-content: space-between; align-items: center; }
+
+  .linha-carrinho {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+
+  .rodape-grade { grid-template-columns: 1fr; }
+  .rodape-baixo { flex-direction: column; text-align: center; }
+
+  .trilha-passos { flex-wrap: wrap; }
+  .trilha-passos li { flex: 1 1 45%; }
+}
+
+@media (max-width: 480px) {
+  .hero-conteudo { padding: var(--esp-4) var(--esp-2); }
+  .secao { padding: var(--esp-4) 0; }
+  .container { padding: 0 var(--esp-2); }
+  .totem-numeros { font-size: 2.6rem; }
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de Privacidade — Raízes do Nordeste</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body data-raiz="../">
+
+<header class="cabecalho">
+  <div class="faixa-zigzag"></div>
+  <nav class="nav">
+    <a href="../index.html" class="marca">Raízes <span>do Nordeste</span></a>
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">☰ Menu</button>
+    <ul class="nav-links">
+      <li><a href="../index.html">Início</a></li>
+      <li><a href="cardapio.html">Cardápio</a></li>
+      <li><a href="fidelidade.html">Fidelidade</a></li>
+    </ul>
+    <div class="nav-acoes">
+      <span data-area-unidade></span>
+      <span data-area-usuario></span>
+      <a href="carrinho.html" class="nav-carrinho" aria-label="Carrinho de compras">🛒<span class="contador-carrinho">0</span></a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="secao">
+    <div class="container" style="max-width: 820px;">
+      <h1>Política de Privacidade</h1>
+      <p>Última atualização: 11 de setembro de 2026. Este documento explica, em conformidade com a
+        Lei Geral de Proteção de Dados (Lei nº 13.709/2018 — LGPD), como o site e o totem de
+        autoatendimento do <strong>Raízes do Nordeste</strong> coletam, usam e protegem os dados
+        pessoais dos titulares (clientes e visitantes).</p>
+
+      <h2>1. Controlador dos dados</h2>
+      <p>O controlador dos dados pessoais tratados por este site é a rede de restaurantes
+        Raízes do Nordeste. Dúvidas, solicitações ou reclamações sobre privacidade podem ser
+        enviadas para <strong>privacidade@raizesdonordeste.com.br</strong>, nosso canal de
+        atendimento ao titular de dados (DPO/encarregado).</p>
+
+      <h2>2. Quais dados coletamos</h2>
+      <ul>
+        <li><strong>Dados de cadastro:</strong> nome, e-mail, telefone e senha (armazenada apenas
+          neste protótipo local; em produção seria armazenada com hash e nunca em texto puro).</li>
+        <li><strong>Dados de pedido:</strong> itens do carrinho, unidade escolhida, endereço de
+          entrega e forma de pagamento informada no checkout.</li>
+        <li><strong>Dados de uso:</strong> unidade selecionada, itens visualizados/favoritos e
+          pontos do programa de fidelidade.</li>
+        <li><strong>Dados de pagamento:</strong> neste protótipo, os dados de cartão informados na
+          página de pagamento são simulados e não são enviados a nenhum servidor — eles existem
+          apenas para fins didáticos da interface.</li>
+      </ul>
+
+      <h2>3. Onde os dados ficam armazenados</h2>
+      <p>Por se tratar de um protótipo acadêmico sem back-end, todos os dados acima (usuários,
+        pedidos, carrinho, pontos de fidelidade e o próprio consentimento) são gravados apenas no
+        <strong>armazenamento local do navegador (localStorage)</strong> do dispositivo do
+        usuário. Nenhuma informação é enviada para servidores externos ou compartilhada com
+        terceiros. Em uma versão de produção, esses dados seriam armazenados em um banco de dados
+        seguro, com criptografia em trânsito e em repouso.</p>
+
+      <h2>4. Finalidade e base legal do tratamento</h2>
+      <ul>
+        <li><strong>Execução de contrato:</strong> processar pedidos, calcular totais e exibir o
+          cardápio correto para a unidade escolhida.</li>
+        <li><strong>Consentimento:</strong> manter a sessão do usuário, lembrar o carrinho entre
+          visitas e enviar comunicações do programa de fidelidade e de promoções.</li>
+        <li><strong>Legítimo interesse:</strong> métricas internas de uso do cardápio e das
+          promoções para melhorar o serviço.</li>
+      </ul>
+
+      <h2>5. Compartilhamento com terceiros</h2>
+      <p>Na página de pagamento, os dados informados seriam, em produção, compartilhados apenas
+        com um <strong>Sistema de Pagamento Externo</strong> (gateway de pagamento/adquirente)
+        estritamente para autorizar a cobrança — este é o ator "Sistema de Pagamento Externo"
+        descrito no diagrama de casos de uso do projeto. Não vendemos nem compartilhamos dados
+        pessoais para fins de publicidade de terceiros.</p>
+
+      <h2>6. Direitos do titular</h2>
+      <p>Conforme o art. 18 da LGPD, você pode solicitar, a qualquer momento:</p>
+      <ul>
+        <li>Confirmação da existência de tratamento e acesso aos seus dados;</li>
+        <li>Correção de dados incompletos, inexatos ou desatualizados;</li>
+        <li>Anonimização, bloqueio ou eliminação de dados desnecessários;</li>
+        <li>Portabilidade dos dados a outro fornecedor de serviço;</li>
+        <li>Eliminação dos dados tratados com base no consentimento;</li>
+        <li>Revogação do consentimento a qualquer momento.</li>
+      </ul>
+      <p>Você pode apagar seus dados salvos neste protótipo a qualquer momento limpando os dados
+        do site no seu navegador, ou pelo botão "Sair" no menu, que remove a sessão ativa.</p>
+
+      <h2>7. Retenção dos dados</h2>
+      <p>Os dados de cadastro e pedidos são mantidos enquanto a conta estiver ativa ou pelo prazo
+        necessário para cumprir obrigações legais/fiscais. Dados de navegação sem cadastro (ex.:
+        carrinho de convidado) permanecem apenas no dispositivo do usuário.</p>
+
+      <h2>8. Cookies e armazenamento local</h2>
+      <p>Utilizamos o localStorage do navegador (não cookies de rastreamento de terceiros) para
+        lembrar login, carrinho, unidade selecionada e o próprio aceite desta política. Você pode
+        limpar esses dados nas configurações do seu navegador a qualquer momento.</p>
+
+      <h2>9. Alterações desta política</h2>
+      <p>Esta política pode ser atualizada periodicamente. Alterações relevantes serão sinalizadas
+        nesta página com nova data de atualização.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape">
+  <div class="container rodape-baixo">
+    <span>© 2026 Raízes do Nordeste.</span>
+    <a href="../index.html">Voltar ao início</a>
+  </div>
+</footer>
+
+<script src="../js/dados.js"></script>
+<script src="../js/script.js"></script>
+</body>
+</html>

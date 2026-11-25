@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meu pedido — Raízes do Nordeste</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body data-raiz="../">
+
+<header class="cabecalho">
+  <div class="faixa-zigzag"></div>
+  <nav class="nav">
+    <a href="../index.html" class="marca">Raízes <span>do Nordeste</span></a>
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">☰ Menu</button>
+    <ul class="nav-links">
+      <li><a href="../index.html">Início</a></li>
+      <li><a href="cardapio.html">Cardápio</a></li>
+      <li><a href="fidelidade.html">Fidelidade</a></li>
+    </ul>
+    <div class="nav-acoes">
+      <span data-area-unidade></span>
+      <span data-area-usuario></span>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="secao">
+    <div class="container" style="max-width: 720px;">
+      <div class="aviso aviso-sucesso">Pagamento confirmado! Acompanhe abaixo o status do seu pedido.</div>
+      <h1>Acompanhar pedido</h1>
+      <div data-painel-pedido></div>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape">
+  <div class="container rodape-baixo">
+    <span>© 2026 Raízes do Nordeste.</span>
+    <a href="privacidade.html">Política de Privacidade</a>
+    <a href="cardapio.html">Fazer novo pedido</a>
+  </div>
+</footer>
+
+<script src="../js/dados.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/pedido.js"></script>
+</body>
+</html>

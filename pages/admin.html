@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel administrativo — Raízes do Nordeste</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body data-raiz="../">
+
+<header class="cabecalho">
+  <div class="faixa-zigzag"></div>
+  <nav class="nav">
+    <a href="../index.html" class="marca">Raízes <span>do Nordeste</span></a>
+    <span id="titulo-painel" style="color:var(--sol); font-weight:600; font-size:0.85rem;">Painel interno</span>
+    <div class="nav-acoes">
+      <span data-area-usuario></span>
+    </div>
+  </nav>
+</header>
+
+<!-- Este mesmo painel atende 3 dos 5 atores do diagrama de casos de uso
+     (Gerente/Administrador, Atendente e Cozinha), com permissões que
+     variam conforme o perfil logado — ver documentacao/atores-casos-de-uso.md -->
+<main>
+  <section class="secao">
+    <div class="container">
+      <div class="secao-titulo">
+        <h1 class="mb-0">Pedidos</h1>
+        <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+          <select id="filtro-unidade" style="padding:0.3rem;" aria-label="Filtrar por unidade">
+            <option value="todas">Todas as unidades</option>
+          </select>
+          <button class="filtro-chip" data-filtro-status="todos" aria-pressed="true">Todos</button>
+          <button class="filtro-chip" data-filtro-status="recebido">Recebidos</button>
+          <button class="filtro-chip" data-filtro-status="preparo">Em preparo</button>
+          <button class="filtro-chip" data-filtro-status="pronto">Prontos</button>
+          <button class="filtro-chip" id="filtro-entregue" data-filtro-status="entregue">Entregues</button>
+        </div>
+      </div>
+
+      <p id="aviso-perfil" style="font-size:0.85rem; color:#5a4f43;"></p>
+
+      <div style="overflow-x:auto;">
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th>Pedido</th>
+              <th>Cliente</th>
+              <th>Unidade</th>
+              <th>Canal</th>
+              <th>Itens</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-pedidos"></tbody>
+        </table>
+      </div>
+
+      <div class="grade grade-4 mt-4" id="grade-estatisticas">
+        <div class="painel"><h3 id="stat-total">0</h3><p class="mb-0">Pedidos hoje</p></div>
+        <div class="painel" data-stat-financeira><h3 id="stat-receita">R$ 0,00</h3><p class="mb-0">Receita total</p></div>
+        <div class="painel"><h3 id="stat-preparo">0</h3><p class="mb-0">Em preparo</p></div>
+        <div class="painel" data-stat-clientes><h3 id="stat-clientes">0</h3><p class="mb-0">Clientes cadastrados</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape">
+  <div class="container rodape-baixo">
+    <span>© 2026 Raízes do Nordeste — Painel interno.</span>
+    <a href="privacidade.html">Política de Privacidade</a>
+  </div>
+</footer>
+
+<script src="../js/dados.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/pedido.js"></script>
+<script>
+  exigirEquipeInterna('login.html');
+
+  const usuarioLogado = RN.usuarioAtual();
+  const PERFIL = usuarioLogado ? usuarioLogado.perfil : 'admin';
+
+  // Rótulos e permissões por ator: o Gerente/Administrador enxerga tudo
+  // (inclusive dados financeiros); o Atendente cuida do atendimento e do
+  // ciclo completo do pedido, mas não vê receita consolidada; a Cozinha
+  // só cuida da produção (recebido → preparo → pronto) e não enxerga
+  // dados de clientes/financeiro nem o status "entregue" (que é tarefa
+  // do Atendente, na entrega/retirada).
+  const ROTULOS_PERFIL = { admin: 'Painel do Gerente/Administrador', atendente: 'Painel do Atendente', cozinha: 'Painel da Cozinha' };
+  const AVISOS_PERFIL = {
+    admin: 'Você está vendo todos os pedidos, de todas as unidades, com indicadores financeiros completos.',
+    atendente: 'Você vê os pedidos da operação (recebido → preparo → pronto → entregue), sem indicadores financeiros.',
+    cozinha: 'Você vê apenas a fila de produção. Marcar "Entregue" é responsabilidade do atendente no balcão/entrega.',
+  };
+  const STATUS_VISIVEIS_COZINHA = ['recebido', 'preparo', 'pronto'];
+
+  document.getElementById('titulo-painel').textContent = ROTULOS_PERFIL[PERFIL] || 'Painel interno';
+  document.getElementById('aviso-perfil').textContent = AVISOS_PERFIL[PERFIL] || '';
+
+  if (PERFIL === 'cozinha') {
+    document.querySelector('[data-stat-financeira]').style.display = 'none';
+    document.querySelector('[data-stat-clientes]').style.display = 'none';
+    document.getElementById('filtro-entregue').style.display = 'none';
+  }
+  if (PERFIL !== 'admin') {
+    document.querySelector('[data-stat-financeira]').style.display = 'none';
+  }
+
+  montarFiltroUnidade();
+
+  const SELOS = { recebido: 'selo-pendente', preparo: 'selo-preparo', pronto: 'selo-pronto', entregue: 'selo-entregue' };
+  let filtroStatus = 'todos';
+  let filtroUnidade = 'todas';
+
+  function montarFiltroUnidade() {
+    const select = document.getElementById('filtro-unidade');
+    RN.UNIDADES.forEach((u) => {
+      const opt = document.createElement('option');
+      opt.value = u.id;
+      opt.textContent = u.nome;
+      select.appendChild(opt);
+    });
+    select.addEventListener('change', () => {
+      filtroUnidade = select.value;
+      renderizarTabela();
+    });
+  }
+
+  document.querySelectorAll('[data-filtro-status]').forEach((botao) => {
+    botao.addEventListener('click', () => {
+      filtroStatus = botao.dataset.filtroStatus;
+      document.querySelectorAll('[data-filtro-status]').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+      botao.setAttribute('aria-pressed', 'true');
+      renderizarTabela();
+    });
+  });
+
+  function opcoesStatusParaPerfil(statusAtual) {
+    if (PERFIL !== 'cozinha') return STATUS_PEDIDO;
+    // A cozinha só avança até "pronto"; para reabrir um pedido já
+    // entregue ela também não tem essa opção disponível.
+    return STATUS_VISIVEIS_COZINHA.includes(statusAtual) ? STATUS_VISIVEIS_COZINHA : STATUS_PEDIDO;
+  }
+
+  function renderizarTabela() {
+    let pedidos = RN.lerJSON(RN.CHAVES.PEDIDOS, []);
+
+    if (PERFIL === 'cozinha') {
+      pedidos = pedidos.filter((p) => STATUS_VISIVEIS_COZINHA.includes(p.status));
+    }
+    if (filtroUnidade !== 'todas') {
+      pedidos = pedidos.filter((p) => p.unidadeId === filtroUnidade);
+    }
+    const filtrados = filtroStatus === 'todos' ? pedidos : pedidos.filter((p) => p.status === filtroStatus);
+    const corpo = document.getElementById('tabela-pedidos');
+
+    if (filtrados.length === 0) {
+      corpo.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#8a8072;">Nenhum pedido encontrado.</td></tr>`;
+    } else {
+      corpo.innerHTML = filtrados.map((p) => `
+        <tr>
+          <td>${p.id}</td>
+          <td>${p.clienteNome}</td>
+          <td>${p.unidadeNome || '—'}</td>
+          <td><span class="selo selo-perfil">${ROTULOS_CANAL[p.canal] || p.canal || 'Site'}</span></td>
+          <td>${p.itens.reduce((s, i) => s + i.quantidade, 0)} itens</td>
+          <td>${RN.formatarMoeda(p.total)}</td>
+          <td><span class="selo ${SELOS[p.status]}">${ROTULOS_STATUS[p.status]}</span></td>
+          <td>
+            <select data-avancar="${p.id}" style="padding:0.3rem;">
+              ${opcoesStatusParaPerfil(p.status).map((s) => `<option value="${s}" ${s === p.status ? 'selected' : ''}>${ROTULOS_STATUS[s]}</option>`).join('')}
+            </select>
+          </td>
+        </tr>
+      `).join('');
+
+      corpo.querySelectorAll('[data-avancar]').forEach((select) => {
+        select.addEventListener('change', () => {
+          const pedidos = RN.lerJSON(RN.CHAVES.PEDIDOS, []);
+          const pedido = pedidos.find((p) => p.id === select.dataset.avancar);
+          if (pedido) {
+            pedido.status = select.value;
+            RN.salvarJSON(RN.CHAVES.PEDIDOS, pedidos);
+            renderizarTabela();
+            renderizarEstatisticas();
+          }
+        });
+      });
+    }
+  }
+
+  function renderizarEstatisticas() {
+    const pedidos = RN.lerJSON(RN.CHAVES.PEDIDOS, []);
+    const usuarios = RN.lerJSON(RN.CHAVES.USUARIOS, []);
+    document.getElementById('stat-total').textContent = pedidos.length;
+    document.getElementById('stat-receita').textContent = RN.formatarMoeda(pedidos.reduce((s, p) => s + p.total, 0));
+    document.getElementById('stat-preparo').textContent = pedidos.filter((p) => p.status === 'preparo').length;
+    document.getElementById('stat-clientes').textContent = usuarios.filter((u) => u.perfil === 'cliente').length;
+  }
+
+  renderizarTabela();
+  renderizarEstatisticas();
+</script>
+</body>
+</html>

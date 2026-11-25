@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pagamento — Raízes do Nordeste</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body data-raiz="../">
+
+<header class="cabecalho">
+  <div class="faixa-zigzag"></div>
+  <nav class="nav">
+    <a href="../index.html" class="marca">Raízes <span>do Nordeste</span></a>
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">☰ Menu</button>
+    <ul class="nav-links">
+      <li><a href="../index.html">Início</a></li>
+      <li><a href="cardapio.html">Cardápio</a></li>
+      <li><a href="carrinho.html">Carrinho</a></li>
+    </ul>
+    <div class="nav-acoes">
+      <span data-area-unidade></span>
+      <span data-area-usuario></span>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="secao">
+    <div class="container" style="max-width: 720px;">
+      <h1>Pagamento</h1>
+      <p style="font-size:0.85rem; color:#5a4f43;">O pagamento é processado por um <strong>Sistema de Pagamento Externo</strong> (gateway simulado neste protótipo). Seus dados são tratados conforme a <a href="privacidade.html" style="color:var(--terracota); font-weight:600;">Política de Privacidade</a>.</p>
+      <ol class="trilha-passos">
+        <li class="concluido">Carrinho</li>
+        <li class="ativo">Pagamento</li>
+        <li>Confirmação</li>
+      </ol>
+
+      <form class="formulario" style="max-width:none;" data-form-pagamento novalidate>
+        <div class="campo">
+          <label for="endereco">Endereço de entrega</label>
+          <input type="text" id="endereco" name="endereco" placeholder="Rua, número, bairro">
+          <span class="campo-erro">Informe o endereço de entrega.</span>
+        </div>
+
+        <div class="campo">
+          <label>Forma de pagamento</label>
+          <div style="display:flex; gap: var(--esp-3);">
+            <label style="font-weight:400; display:flex; align-items:center; gap:0.4rem;">
+              <input type="radio" name="metodo" value="cartao" checked style="width:auto;"> Cartão
+            </label>
+            <label style="font-weight:400; display:flex; align-items:center; gap:0.4rem;">
+              <input type="radio" name="metodo" value="pix" style="width:auto;"> Pix
+            </label>
+          </div>
+        </div>
+
+        <div data-campos-cartao>
+          <div class="campo">
+            <label for="numeroCartao">Número do cartão</label>
+            <input type="text" id="numeroCartao" name="numeroCartao" placeholder="0000 0000 0000 0000" inputmode="numeric">
+            <span class="campo-erro">Informe um número de cartão válido.</span>
+          </div>
+          <div class="grade grade-2">
+            <div class="campo">
+              <label for="validade">Validade</label>
+              <input type="text" id="validade" name="validade" placeholder="MM/AA">
+              <span class="campo-erro">Informe a validade.</span>
+            </div>
+            <div class="campo">
+              <label for="cvv">CVV</label>
+              <input type="text" id="cvv" name="cvv" placeholder="000" inputmode="numeric">
+              <span class="campo-erro">Informe o CVV.</span>
+            </div>
+          </div>
+        </div>
+
+        <div data-campos-pix style="display:none;">
+          <div class="aviso aviso-info">Uma chave Pix "copia e cola" simulada será exibida após confirmar.</div>
+        </div>
+
+        <div class="resumo-pedido mt-4">
+          <div class="resumo-linha"><span>Subtotal</span><span data-pg-subtotal>R$ 0,00</span></div>
+          <div class="resumo-linha desconto" data-pg-linha-desconto style="display:none;"><span>Desconto (cupom)</span><span data-pg-desconto>R$ 0,00</span></div>
+          <div class="resumo-linha"><span>Taxa de entrega</span><span data-pg-taxa>R$ 0,00</span></div>
+          <div class="resumo-linha total"><span>Total</span><span data-pg-total>R$ 0,00</span></div>
+        </div>
+
+        <button type="submit" class="btn btn-primario btn-bloco mt-4">Confirmar pagamento</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape">
+  <div class="container rodape-baixo">
+    <span>© 2026 Raízes do Nordeste.</span>
+    <a href="privacidade.html">Política de Privacidade</a>
+    <a href="carrinho.html">Voltar ao carrinho</a>
+  </div>
+</footer>
+
+<script src="../js/dados.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/carrinho.js"></script>
+<script src="../js/pedido.js"></script>
+<script src="../js/pagamento.js"></script>
+</body>
+</html>

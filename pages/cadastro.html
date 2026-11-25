@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Criar conta — Raízes do Nordeste</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body data-raiz="../">
+
+<header class="cabecalho">
+  <div class="faixa-zigzag"></div>
+  <nav class="nav">
+    <a href="../index.html" class="marca">Raízes <span>do Nordeste</span></a>
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">☰ Menu</button>
+    <ul class="nav-links">
+      <li><a href="../index.html">Início</a></li>
+      <li><a href="cardapio.html">Cardápio</a></li>
+      <li><a href="fidelidade.html">Fidelidade</a></li>
+    </ul>
+    <div class="nav-acoes">
+      <a href="carrinho.html" class="nav-carrinho" aria-label="Carrinho de compras">🛒<span class="contador-carrinho">0</span></a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="secao">
+    <div class="container">
+      <h1>Criar conta</h1>
+      <p>Cadastre-se para acumular pontos de fidelidade e acompanhar seus pedidos.</p>
+
+      <div id="mensagem"></div>
+
+      <form class="formulario" id="form-cadastro" novalidate>
+        <div class="campo">
+          <label for="nome">Nome completo</label>
+          <input type="text" id="nome" name="nome" required>
+          <span class="campo-erro">Informe seu nome.</span>
+        </div>
+        <div class="campo">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" required>
+          <span class="campo-erro">Informe um e-mail válido.</span>
+        </div>
+        <div class="campo">
+          <label for="telefone">Telefone</label>
+          <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000">
+        </div>
+        <div class="campo">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" name="senha" required minlength="4">
+          <span class="campo-erro">A senha deve ter ao menos 4 caracteres.</span>
+        </div>
+        <div class="campo-checkbox">
+          <input type="checkbox" id="aceite-privacidade" name="aceitePrivacidade" required>
+          <label for="aceite-privacidade">Li e concordo com a <a href="privacidade.html" target="_blank" style="color:var(--terracota); font-weight:600;">Política de Privacidade</a> e autorizo o uso dos meus dados para cadastro, pedidos e fidelidade, conforme a LGPD.</label>
+        </div>
+        <button type="submit" class="btn btn-primario btn-bloco">Criar conta</button>
+      </form>
+
+      <p style="margin-top: var(--esp-3); font-size:0.9rem;">
+        Já tem conta? <a href="login.html" style="color:var(--terracota); font-weight:600;">Entrar</a>
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape">
+  <div class="container rodape-baixo">
+    <span>© 2026 Raízes do Nordeste.</span>
+    <a href="privacidade.html">Política de Privacidade</a>
+    <a href="../index.html">Voltar ao início</a>
+  </div>
+</footer>
+
+<script src="../js/dados.js"></script>
+<script src="../js/script.js"></script>
+<script>
+  const form = document.getElementById('form-cadastro');
+  const mensagem = document.getElementById('mensagem');
+
+  form.addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    mensagem.innerHTML = '';
+
+    const nome = form.nome.value.trim();
+    const email = form.email.value.trim().toLowerCase();
+    const senha = form.senha.value;
+
+    if (!form.aceitePrivacidade.checked) {
+      mensagem.innerHTML = `<div class="aviso aviso-erro">É necessário aceitar a Política de Privacidade para criar a conta.</div>`;
+      return;
+    }
+
+    const usuarios = RN.lerJSON(RN.CHAVES.USUARIOS, []);
+    if (usuarios.some((u) => u.email.toLowerCase() === email)) {
+      mensagem.innerHTML = `<div class="aviso aviso-erro">Já existe uma conta com este e-mail.</div>`;
+      return;
+    }
+
+    const consentimento = { aceito: true, em: new Date().toISOString() };
+    usuarios.push({ nome, email, senha, telefone: form.telefone.value.trim(), perfil: 'cliente', consentimentoLGPD: consentimento });
+    RN.salvarJSON(RN.CHAVES.USUARIOS, usuarios);
+    RN.salvarJSON(RN.CHAVES.USUARIO, { nome, email, perfil: 'cliente' });
+    RN.registrarConsentimentoLGPD('cadastro');
+
+    mensagem.innerHTML = `<div class="aviso aviso-sucesso">Conta criada com sucesso! Redirecionando...</div>`;
+    setTimeout(() => { window.location.href = 'perfil.html'; }, 900);
+  });
+</script>
+</body>
+</html>

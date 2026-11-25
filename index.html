@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raízes do Nordeste — Sabor, cultura e memória</title>
+<meta name="description" content="Cardápio nordestino autêntico, cultura, música forró e destinos do sertão em um só lugar.">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<header class="cabecalho">
+  <div class="faixa-zigzag"></div>
+  <nav class="nav">
+    <a href="index.html" class="marca">Raízes <span>do Nordeste</span></a>
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">☰ Menu</button>
+    <ul class="nav-links">
+      <li><a href="index.html" aria-current="page">Início</a></li>
+      <li><a href="pages/cardapio.html">Cardápio</a></li>
+      <li><a href="pages/cultura.html">Cultura</a></li>
+      <li><a href="pages/destinos.html">Destinos</a></li>
+      <li><a href="pages/forro.html">Forró</a></li>
+      <li><a href="pages/gastronomia.html">Gastronomia</a></li>
+      <li><a href="pages/fidelidade.html">Fidelidade</a></li>
+    </ul>
+    <div class="nav-acoes">
+      <span data-area-unidade></span>
+      <span data-area-usuario></span>
+      <a href="pages/carrinho.html" class="nav-carrinho" aria-label="Carrinho de compras">🛒<span class="contador-carrinho">0</span></a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-conteudo">
+      <div>
+        <p class="hero-eyebrow">Cordel, forró e fogão de lenha</p>
+        <h1>O Nordeste inteiro numa mesa só.</h1>
+        <p>Pratos que atravessam gerações — carne de sol, baião de dois, tapioca e muito mais — feitos com a receita de quem aprendeu no fogão a lenha do sertão.</p>
+        <div class="hero-acoes">
+          <a href="pages/cardapio.html" class="btn btn-claro">Ver cardápio</a>
+          <a href="pages/totem.html" class="btn btn-secundario" style="border-color:#FFFDF8; color:#FFFDF8;">Autoatendimento (totem)</a>
+        </div>
+      </div>
+      <div class="hero-arte">"Cordel do Sabor": receitas de raiz, contadas em versos e servidas com orgulho.</div>
+    </div>
+  </section>
+
+  <section class="secao">
+    <div class="container">
+      <div class="secao-titulo">
+        <h2>Promoções da semana</h2>
+        <a href="pages/cardapio.html" class="btn btn-secundario">Aproveitar</a>
+      </div>
+      <div class="promo-faixa" data-promocoes-home></div>
+    </div>
+  </section>
+
+  <section class="secao">
+    <div class="container">
+      <div class="secao-titulo">
+        <h2>Um cardápio com história</h2>
+        <a href="pages/cardapio.html" class="btn btn-secundario">Ver tudo</a>
+      </div>
+      <div class="grade grade-4" id="destaques-home"></div>
+    </div>
+  </section>
+
+  <section class="secao secao-alt">
+    <div class="container grade grade-3">
+      <div class="painel">
+        <h3>Cultura viva</h3>
+        <p>Cordel, xilogravura e as tradições que dão sabor à nossa história.</p>
+        <a href="pages/cultura.html" class="btn btn-secundario">Explorar</a>
+      </div>
+      <div class="painel">
+        <h3>Destinos do sertão</h3>
+        <p>Do litoral às serras: lugares que inspiram cada prato do cardápio.</p>
+        <a href="pages/destinos.html" class="btn btn-secundario">Explorar</a>
+      </div>
+      <div class="painel">
+        <h3>Forró de raiz</h3>
+        <p>A sanfona, o triângulo e a zabumba que embalam nossas noites.</p>
+        <a href="pages/forro.html" class="btn btn-secundario">Explorar</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape">
+  <div class="container">
+    <div class="rodape-grade">
+      <div>
+        <h4>Raízes do Nordeste</h4>
+        <p style="color:rgba(255,253,248,0.7); max-width:34ch;">Um restaurante que carrega a memória do sertão, da mata e do litoral em cada prato.</p>
+      </div>
+      <div>
+        <h4>Navegue</h4>
+        <ul>
+          <li><a href="pages/cardapio.html">Cardápio</a></li>
+          <li><a href="pages/fidelidade.html">Programa de fidelidade</a></li>
+          <li><a href="pages/login.html">Entrar</a></li>
+          <li><a href="pages/cadastro.html">Criar conta</a></li>
+          <li><a href="pages/privacidade.html">Política de Privacidade</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Cultura</h4>
+        <ul>
+          <li><a href="pages/cultura.html">Cordel</a></li>
+          <li><a href="pages/forro.html">Forró</a></li>
+          <li><a href="pages/destinos.html">Destinos</a></li>
+          <li><a href="pages/gastronomia.html">Gastronomia</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="rodape-baixo">
+      <span>© 2026 Raízes do Nordeste. Todos os direitos reservados.</span>
+      <span>Feito com orgulho de raiz nordestina.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/dados.js"></script>
+<script src="js/script.js"></script>
+<script>
+  // Destaques do cardápio da unidade atualmente selecionada.
+  const destaques = RN.itensDisponiveisNaUnidade(RN.unidadeAtual()).slice(0, 4);
+  document.getElementById('destaques-home').innerHTML = destaques.map((p) => `
+    <div class="painel">
+      <div style="font-size:2rem;">${p.emoji}</div>
+      <h3>${p.nome}</h3>
+      <p style="font-size:0.9rem;">${p.desc}</p>
+      <strong>${RN.formatarMoeda(p.preco)}</strong>
+    </div>
+  `).join('');
+
+  // Campanhas e promoções ativas na unidade selecionada.
+  const promosHome = RN.promocoesAtivas(RN.unidadeAtual());
+  document.querySelector('[data-promocoes-home]').innerHTML = promosHome.map((p) => `
+    <div class="promo-cartao">
+      <h4>${p.titulo}</h4>
+      <p>${p.descricao}</p>
+      ${p.tipo === 'cupom' ? `<span class="promo-cupom">${p.codigo}</span>` : ''}
+    </div>
+  `).join('');
+</script>
+</body>
+</html>

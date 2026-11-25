@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meu perfil — Raízes do Nordeste</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body data-raiz="../">
+
+<header class="cabecalho">
+  <div class="faixa-zigzag"></div>
+  <nav class="nav">
+    <a href="../index.html" class="marca">Raízes <span>do Nordeste</span></a>
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">☰ Menu</button>
+    <ul class="nav-links">
+      <li><a href="../index.html">Início</a></li>
+      <li><a href="cardapio.html">Cardápio</a></li>
+      <li><a href="fidelidade.html">Fidelidade</a></li>
+    </ul>
+    <div class="nav-acoes">
+      <span data-area-unidade></span>
+      <span data-area-usuario></span>
+      <a href="carrinho.html" class="nav-carrinho" aria-label="Carrinho de compras">🛒<span class="contador-carrinho">0</span></a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="secao">
+    <div class="container">
+      <h1>Meu perfil</h1>
+      <div class="grade grade-2" style="align-items:start;">
+        <div class="painel">
+          <h3>Dados da conta</h3>
+          <p><strong>Nome:</strong> <span id="perfil-nome"></span></p>
+          <p><strong>E-mail:</strong> <span id="perfil-email"></span></p>
+          <p><strong>Pontos de fidelidade:</strong> <span id="perfil-pontos"></span> pts</p>
+          <a href="fidelidade.html" class="btn btn-secundario">Ver programa de fidelidade</a>
+          <p style="margin-top:var(--esp-2); font-size:0.85rem;">Seus dados são usados conforme a <a href="privacidade.html" style="color:var(--terracota); font-weight:600;">Política de Privacidade</a>. Para corrigir ou excluir seus dados, use o botão "Sair" e limpe os dados do site no navegador, ou fale conosco pelo canal de privacidade.</p>
+        </div>
+
+        <div class="painel">
+          <h3>Meus pedidos</h3>
+          <div id="perfil-pedidos"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape">
+  <div class="container rodape-baixo">
+    <span>© 2026 Raízes do Nordeste.</span>
+    <a href="privacidade.html">Política de Privacidade</a>
+    <a href="../index.html">Voltar ao início</a>
+  </div>
+</footer>
+
+<script src="../js/dados.js"></script>
+<script src="../js/script.js"></script>
+<script>
+  exigirLogin('login.html');
+  const usuario = RN.usuarioAtual();
+
+  document.getElementById('perfil-nome').textContent = usuario.nome;
+  document.getElementById('perfil-email').textContent = usuario.email;
+
+  const pontos = RN.lerJSON(RN.CHAVES.FIDELIDADE, {});
+  document.getElementById('perfil-pontos').textContent = pontos[usuario.email] || 0;
+
+  const pedidos = RN.lerJSON(RN.CHAVES.PEDIDOS, []).filter((p) => p.clienteEmail === usuario.email);
+  const listaPedidos = document.getElementById('perfil-pedidos');
+
+  if (pedidos.length === 0) {
+    listaPedidos.innerHTML = `<div class="vazio">Você ainda não fez pedidos. <a href="cardapio.html">Ver cardápio →</a></div>`;
+  } else {
+    listaPedidos.innerHTML = pedidos.map((p) => `
+      <div class="resumo-linha">
+        <span><a href="pedido.html?id=${p.id}">${p.id}</a> — ${new Date(p.criadoEm).toLocaleDateString('pt-BR')}</span>
+        <span>${RN.formatarMoeda(p.total)}</span>
+      </div>
+    `).join('');
+  }
+</script>
+</body>
+</html>

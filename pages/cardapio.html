@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardápio — Raízes do Nordeste</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body data-raiz="../">
+
+<header class="cabecalho">
+  <div class="faixa-zigzag"></div>
+  <nav class="nav">
+    <a href="../index.html" class="marca">Raízes <span>do Nordeste</span></a>
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">☰ Menu</button>
+    <ul class="nav-links">
+      <li><a href="../index.html">Início</a></li>
+      <li><a href="cardapio.html" aria-current="page">Cardápio</a></li>
+      <li><a href="cultura.html">Cultura</a></li>
+      <li><a href="destinos.html">Destinos</a></li>
+      <li><a href="forro.html">Forró</a></li>
+      <li><a href="gastronomia.html">Gastronomia</a></li>
+      <li><a href="fidelidade.html">Fidelidade</a></li>
+    </ul>
+    <div class="nav-acoes">
+      <span data-area-unidade></span>
+      <span data-area-usuario></span>
+      <a href="carrinho.html" class="nav-carrinho" aria-label="Carrinho de compras">🛒<span class="contador-carrinho">0</span></a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="secao">
+    <div class="container">
+      <h1>Cardápio</h1>
+      <p>Pratos, lanches, bebidas e sobremesas — tudo com a receita de raiz.</p>
+      <p data-info-unidade style="font-size:0.9rem; color:#5a4f43;"></p>
+
+      <div class="promo-faixa" data-promocoes></div>
+
+      <div class="campo" style="max-width:360px; margin: var(--esp-3) 0;">
+        <label for="busca">Buscar prato</label>
+        <input type="search" id="busca" data-busca-cardapio placeholder="Ex.: carne de sol, tapioca...">
+      </div>
+
+      <div class="filtros-cardapio" data-filtros-cardapio></div>
+
+      <div style="display:flex; flex-direction:column; gap:1rem;" data-lista-cardapio></div>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape">
+  <div class="container rodape-baixo">
+    <span>© 2026 Raízes do Nordeste.</span>
+    <a href="privacidade.html">Política de Privacidade</a>
+    <a href="../index.html">Voltar ao início</a>
+  </div>
+</footer>
+
+<script src="../js/dados.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/cardapio.js"></script>
+</body>
+</html>

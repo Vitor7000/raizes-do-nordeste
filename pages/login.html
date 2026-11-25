@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entrar — Raízes do Nordeste</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body data-raiz="../">
+
+<header class="cabecalho">
+  <div class="faixa-zigzag"></div>
+  <nav class="nav">
+    <a href="../index.html" class="marca">Raízes <span>do Nordeste</span></a>
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">☰ Menu</button>
+    <ul class="nav-links">
+      <li><a href="../index.html">Início</a></li>
+      <li><a href="cardapio.html">Cardápio</a></li>
+      <li><a href="cultura.html">Cultura</a></li>
+      <li><a href="destinos.html">Destinos</a></li>
+      <li><a href="forro.html">Forró</a></li>
+      <li><a href="gastronomia.html">Gastronomia</a></li>
+    </ul>
+    <div class="nav-acoes">
+      <a href="carrinho.html" class="nav-carrinho" aria-label="Carrinho de compras">🛒<span class="contador-carrinho">0</span></a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="secao">
+    <div class="container">
+      <h1>Entrar</h1>
+      <p>Acesse sua conta para acompanhar pedidos e pontos de fidelidade.</p>
+
+      <div id="mensagem"></div>
+
+      <form class="formulario" id="form-login" novalidate>
+        <div class="campo">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" required>
+          <span class="campo-erro">Informe um e-mail válido.</span>
+        </div>
+        <div class="campo">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" name="senha" required minlength="4">
+          <span class="campo-erro">A senha deve ter ao menos 4 caracteres.</span>
+        </div>
+        <button type="submit" class="btn btn-primario btn-bloco">Entrar</button>
+      </form>
+
+      <p style="margin-top: var(--esp-3); font-size:0.9rem;">
+        Ainda não tem conta? <a href="cadastro.html" style="color:var(--terracota); font-weight:600;">Cadastre-se</a>
+      </p>
+      <p style="font-size:0.85rem; color:#8a8072;">
+        Contas de demonstração do painel interno (atores do diagrama de casos de uso):<br>
+        Gerente/Administrador: <strong>admin@raizes.com</strong> / <strong>admin123</strong><br>
+        Atendente: <strong>atendente@raizes.com</strong> / <strong>atendente123</strong><br>
+        Cozinha: <strong>cozinha@raizes.com</strong> / <strong>cozinha123</strong>
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape">
+  <div class="container rodape-baixo">
+    <span>© 2026 Raízes do Nordeste.</span>
+    <a href="privacidade.html">Política de Privacidade</a>
+    <a href="../index.html">Voltar ao início</a>
+  </div>
+</footer>
+
+<script src="../js/dados.js"></script>
+<script src="../js/script.js"></script>
+<script>
+  // Garante que existam contas de demonstração para os 3 atores internos
+  // (Gerente/Administrador, Atendente e Cozinha) que compartilham o
+  // mesmo painel interno com permissões distintas.
+  (function garantirContasInternasDemo() {
+    const usuarios = RN.lerJSON(RN.CHAVES.USUARIOS, []);
+    const contasDemo = [
+      { nome: 'Administração', email: 'admin@raizes.com', senha: 'admin123', perfil: 'admin' },
+      { nome: 'Atendente Balcão', email: 'atendente@raizes.com', senha: 'atendente123', perfil: 'atendente' },
+      { nome: 'Cozinha', email: 'cozinha@raizes.com', senha: 'cozinha123', perfil: 'cozinha' },
+    ];
+    let alterou = false;
+    contasDemo.forEach((conta) => {
+      if (!usuarios.some((u) => u.email === conta.email)) {
+        usuarios.push(conta);
+        alterou = true;
+      }
+    });
+    if (alterou) RN.salvarJSON(RN.CHAVES.USUARIOS, usuarios);
+  })();
+
+  const form = document.getElementById('form-login');
+  const mensagem = document.getElementById('mensagem');
+
+  form.addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    mensagem.innerHTML = '';
+    const email = form.email.value.trim().toLowerCase();
+    const senha = form.senha.value;
+
+    const usuarios = RN.lerJSON(RN.CHAVES.USUARIOS, []);
+    const usuario = usuarios.find((u) => u.email.toLowerCase() === email && u.senha === senha);
+
+    if (!usuario) {
+      mensagem.innerHTML = `<div class="aviso aviso-erro">E-mail ou senha incorretos.</div>`;
+      return;
+    }
+
+    RN.salvarJSON(RN.CHAVES.USUARIO, { nome: usuario.nome, email: usuario.email, perfil: usuario.perfil || 'cliente' });
+    const perfisInternos = ['admin', 'atendente', 'cozinha'];
+    window.location.href = perfisInternos.includes(usuario.perfil) ? 'admin.html' : 'perfil.html';
+  });
+</script>
+</body>
+</html>
