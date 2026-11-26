@@ -37,10 +37,11 @@ function ativarAreaDoUsuario() {
   const area = document.querySelector('[data-area-usuario]');
   if (!area) return;
 
+  const raiz = document.body.dataset.raiz || '';
   const usuario = RN.usuarioAtual();
   if (usuario) {
     area.innerHTML = `
-      <a href="perfil.html" title="Meu perfil" aria-label="Meu perfil">👤 ${usuario.nome.split(' ')[0]}</a>
+      <a href="${raiz}pages/perfil.html" title="Meu perfil" aria-label="Meu perfil">👤 ${usuario.nome.split(' ')[0]}</a>
       <a href="#" data-sair title="Sair">Sair</a>
     `;
     area.querySelector('[data-sair]').addEventListener('click', (ev) => {
@@ -49,7 +50,7 @@ function ativarAreaDoUsuario() {
       window.location.reload();
     });
   } else {
-    area.innerHTML = `<a href="login.html">Entrar</a>`;
+    area.innerHTML = `<a href="${raiz}pages/login.html">Entrar</a>`;
   }
 }
 
